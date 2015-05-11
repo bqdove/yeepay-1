@@ -444,7 +444,7 @@ class Crypt_RSA
      *
      * @return Crypt_RSA
      */
-    public function Crypt_RSA()
+    public function __construct()
     {
         $this->configFile = CRYPT_RSA_OPENSSL_CONFIG;
 

@@ -104,7 +104,7 @@ class Crypt_TripleDES extends Crypt_DES
      *
      * @return Crypt_TripleDES
      */
-    public function Crypt_TripleDES($mode = CRYPT_DES_MODE_CBC)
+    public function __construct($mode = CRYPT_DES_MODE_CBC)
     {
         if (!defined('CRYPT_DES_MODE')) {
             switch (true) {

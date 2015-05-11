@@ -3,6 +3,8 @@
 namespace Yeepay;
 
 // 接口类型
+use Yeepay\Exception\YeepayMPayException;
+
 define('YEEPAY_PAY_API', 1);
 define('YEEPAY_MERCHANT_API', 2);
 define('YEEPAY_MOBILE_API', 3);
@@ -401,7 +403,7 @@ class YeepayMPay
         $url = $this->getAPIUrl($type, $method);
         $data = $this->http($url, 'POST', http_build_query($request));
         if ($this->http_info['http_code'] == 405) {
-            throw new yeepayMPayException('此接口不支持使用POST方法请求', 1004);
+            throw new YeepayMPayException('此接口不支持使用POST方法请求', 1004);
         }
 
         return $this->parseReturnData($data);
@@ -423,7 +425,7 @@ class YeepayMPay
         $url .= '?'.http_build_query($request);
         $data = $this->http($url, 'GET');
         if ($this->http_info['http_code'] == 405) {
-            throw new yeepayMPayException('此接口不支持使用GET方法请求', 1003);
+            throw new YeepayMPayException('此接口不支持使用GET方法请求', 1003);
         }
 
         return $this->parseReturnData($data);
@@ -439,7 +441,7 @@ class YeepayMPay
         $url .= '?'.http_build_query($request);
         $data = $this->http($url, 'GET');
         if ($this->http_info['http_code'] == 405) {
-            throw new yeepayMPayException('此接口不支持使用GET方法请求', 1003);
+            throw new YeepayMPayException('此接口不支持使用GET方法请求', 1003);
         }
 
         return $this->parseReturnClearData($data);
@@ -555,7 +557,7 @@ class YeepayMPay
             $return = json_decode($data, true);
 
             if (array_key_exists('error_code', $return) && !array_key_exists('status', $return)) {
-                throw new yeepayMPayException($return['error_msg'], $return['error_code']);
+                throw new YeepayMPayException($return['error_msg'], $return['error_code']);
             }
 
             return $this->parseReturn($return['data'], $return['encryptkey']);
@@ -571,7 +573,7 @@ class YeepayMPay
 // 		if(array_key_exists('error_code', $return))
 //		for api : query/order
         if (array_key_exists('error_code', $return) && !array_key_exists('status', $return)) {
-            throw new yeepayMPayException($return['error_msg'], $return['error_code']);
+            throw new YeepayMPayException($return['error_msg'], $return['error_code']);
         }
 
         return $this->parseReturn($return['data'], $return['encryptkey']);
@@ -584,17 +586,17 @@ class YeepayMPay
         $return = json_decode($return, true);
         if (!array_key_exists('sign', $return)) {
             if (array_key_exists('error_code', $return)) {
-                throw new yeepayMPayException($return['error_msg'], $return['error_code']);
+                throw new YeepayMPayException($return['error_msg'], $return['error_code']);
             }
-            throw new yeepayMPayException('请求返回异常', 1001);
+            throw new YeepayMPayException('请求返回异常', 1001);
         } else {
             //if( !$this->RSAVerify($return, $return['sign']) )
-            //	throw new yeepayMPayException('请求返回签名验证失败',1002);
+            //	throw new YeepayMPayException('请求返回签名验证失败',1002);
 
 //		if(array_key_exists('error_code', $return))
 //		for api : query/order
             if (array_key_exists('error_code', $return) && !array_key_exists('status', $return)) {
-                throw new yeepayMPayException($return['error_msg'], $return['error_code']);
+                throw new YeepayMPayException($return['error_msg'], $return['error_code']);
             }
             unset($return['sign']);
 
